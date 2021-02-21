@@ -11,3 +11,17 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+
+
+
+.logout button{
+  float: right;
+}
+.user-name span{
+  float: right;
+}
+.user-avatar img{
+  float: right;
+  width: 50px;
+}

@@ -1,5 +1,3 @@
-
-
 const TRAKT_API_KEY = "3f2a4833bca232c1afbb66c2a56447e7d75b44372af9d45f11cf0b907b326b92";
 const TRAKT_API_SECRET = "ea9ac4d176818616f44dc3a3d643cf73569590ae0c055d2dc190023d9762ea81";
 const TRAKT_DOMAIN = "https://api.trakt.tv/";
@@ -9,7 +7,8 @@ const TRAKT_REMOVE = "sync/history/remove/";
 const TRAKT_AUTHORIZE = "oauth/authorize/";
 const TRAKT_GET_TOKEN = "oauth/token/";
 const TRAKT_USER_INFO = "users/settings/";
-const TRAKT_REDIRECT_URI = "https://shengz94.github.io/trak-history-importer/";
+const TRAKT_REDIRECT_URI = "https://shengz94.github.io/trakt-history-importer/";
+const TRAKT_REDIRECT_URI1 = "http://localhost:3000/";
 
 function getAuthenticationURI(){
     return TRAKT_DOMAIN + TRAKT_AUTHORIZE + "?client_id=" + TRAKT_API_KEY 
@@ -18,24 +17,21 @@ function getAuthenticationURI(){
 
 function getToken(code){
     let endpoint = TRAKT_DOMAIN + TRAKT_GET_TOKEN;
+
+    const body = new URLSearchParams();
+    body.append("code", code);
+    body.append("client_id", TRAKT_API_KEY);
+    body.append("client_secret", TRAKT_API_SECRET);
+    body.append("redirect_uri", TRAKT_REDIRECT_URI);
+    body.append("grant_type", "authorization_code");
     let params = {
-        headers:{
-            "Content-Type": "application/json",
-            "trakt-api-key": TRAKT_API_KEY,
-            "trakt-api-version": "2"
+        header:{
+            "Content-Type": "application/json"
         },
-        body:{
-            "code": code,
-            "client_id": TRAKT_API_KEY,
-            "client_secret": TRAKT_API_SECRET,
-            "redirect_uri": TRAKT_REDIRECT_URI,
-            "grant_type": "authorization_code"
-        },
+        body: body,
         method: "post"
     };
-
     return fetch(endpoint, params).then((response) => {
-        console.log(response);
         return response.json();
     }).then((data) => {
         var result = {
@@ -90,6 +86,14 @@ function searchForTitle(title){
 function addToHistory(id, type, token){
     let itemType = type + "s";
     let endpoint = TRAKT_DOMAIN + TRAKT_ADD;
+
+    const item = {
+        [itemType]: [{
+            "ids":{
+                "trakt":id
+            }
+        }]
+    };
     let params = {
         headers:{
             "Content-Type": "application/json",
@@ -97,13 +101,7 @@ function addToHistory(id, type, token){
             "trakt-api-version": "2",
             "Authorization": "Bearer " + token
         },
-        body:{
-            [itemType]:[{
-                "ids":{
-                    "trakt":id
-                }
-            }]
-        },
+        body: JSON.stringify(item),
         method: "post"
     };
 
@@ -154,11 +152,11 @@ function getUserInfo(token){
         return response.json();
     }).then((data) => {
         var user = {
-            username: data.username,
-            name: data.name,
-            uuid: data.ids.uuid,
-            slug: data.ids.slug,
-            image: data.images.avatar.full,
+            username: data.user.username,
+            name: data.user.name,
+            uuid: data.user.ids.uuid,
+            slug: data.user.ids.slug,
+            image: data.user.images.avatar.full,
         }
 
         return user;
