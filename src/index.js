@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import Gateway from './components/Gateway';
+import Gateway from './Components/Gateway';
 
 ReactDOM.render(
   <React.StrictMode>

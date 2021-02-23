@@ -6,9 +6,10 @@ const TRAKT_ADD = "sync/history/";
 const TRAKT_REMOVE = "sync/history/remove/";
 const TRAKT_AUTHORIZE = "oauth/authorize/";
 const TRAKT_GET_TOKEN = "oauth/token/";
+const TRAKT_REVOKE_TOKEN = "oauth/revoke/";
 const TRAKT_USER_INFO = "users/settings/";
 const TRAKT_REDIRECT_URI = "https://shengz94.github.io/trakt-history-importer/";
-const TRAKT_REDIRECT_URI1 = "http://localhost:3000/";
+const TRAKT_REDIRECT_URI_DEBUG = "http://localhost:3000/";
 
 function getAuthenticationURI(){
     return TRAKT_DOMAIN + TRAKT_AUTHORIZE + "?client_id=" + TRAKT_API_KEY 
@@ -46,8 +47,23 @@ function getToken(code){
 
 }
 
-function checkToken(){
-    //check if token is stored in web storage, if not, return false
+function revokeToken(token){
+    let endpoint = TRAKT_DOMAIN + TRAKT_REVOKE_TOKEN;
+
+    const body = new URLSearchParams();
+    body.append("token", token);
+    body.append("client_id", TRAKT_API_KEY);
+    body.append("client_secret", TRAKT_API_SECRET);
+    let params = {
+        header:{
+            "Content-Type": "application/json"
+        },
+        body: body,
+        method: "post"
+    };
+    return fetch(endpoint, params).then((response) => {
+        return response.json();
+    });
 }
 
 function searchForTitle(title){
@@ -83,16 +99,12 @@ function searchForTitle(title){
     });
 }
 
-function addToHistory(id, type, token){
-    let itemType = type + "s";
+function addToHistory(movies, shows, token){
     let endpoint = TRAKT_DOMAIN + TRAKT_ADD;
 
     const item = {
-        [itemType]: [{
-            "ids":{
-                "trakt":id
-            }
-        }]
+        "movies": movies,
+        "shows": shows
     };
     let params = {
         headers:{
@@ -165,4 +177,4 @@ function getUserInfo(token){
 
 
 
-export {getAuthenticationURI, getToken, searchForTitle, addToHistory, getUserInfo}
+export {getAuthenticationURI, getToken, revokeToken, searchForTitle, addToHistory, getUserInfo}

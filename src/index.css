@@ -5,6 +5,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #f4f4f4;
 }
 
 code {
@@ -13,15 +14,151 @@ code {
 }
 
 
+/****************************/
+/*          Top-Bar         */
+/****************************/
+
+.top-bar{
+  top: 0;
+  height: 43px;
+  width: 100%;
+  background: rgba(0,0,0,.6);
+  color: white;
+  z-index: 99;
+  position: fixed;
+}
+.top-bar:hover{
+  background: rgba(0,0,0,.9);
+}
+.top-bar + div {
+  padding-top: 50px;
+}
+
+.top-bar .user-info{
+  display: flex;
+  justify-content: space-between;
+  height: 45px;
+}
+
+.top-bar .user-info .left-content{
+  display: flex;
+  align-items: center;
+}
+.top-bar .user-info .left-content .logo img#trakt{
+  width: 80px;
+  margin: 0 20px;
+}
+.top-bar .user-info .left-content .logo img#github{
+  width: 20px;
+  margin: 0 10px;
+}
+.top-bar .user-info .left-content .app-title{
+  cursor: default;
+  height: 55px;
+}
+
+.top-bar .user-info .right-content{
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-right: 10px;
+}
+.top-bar .user-info .right-content .logout svg{
+  cursor: pointer;
+}
+.top-bar .user-info .right-content .logout svg:hover{
+  color:#ed1c24;
+}
+.top-bar .user-info .right-content .user-avatar img{
+  width: 30px;
+  border-radius: 50%;
+  margin: 0 5px 0 15px;
+
+}
+
+/****************************/
+/*           Login          */
+/****************************/
+
+.login-view{
+  display: flex;
+  justify-content: center;
+}
+
+.login-view button{
+  margin: 25px 0;
+}
 
 
-.logout button{
-  float: right;
+/****************************/
+/*     Import from list     */
+/****************************/
+
+.import-list-view{
+  display: grid;
+  justify-content: center;
 }
-.user-name span{
-  float: right;
+.import-list-view div{
+  margin: 20px 0;
 }
-.user-avatar img{
-  float: right;
-  width: 50px;
+
+/****************************/
+/*      Import to Trakt     */
+/****************************/
+
+.import-trakt-view .title-list .title-import-card{
+  display: flex;
+  margin: 15px;
+  padding: 15px;
+  background-color: white;
+}
+.import-trakt-view .title-list .title-import-card .checkbox-import{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 10px 0 0;
+}
+.import-trakt-view .title-list .title-import-card .checkbox-import input[type='checkbox'] {
+  width:20px;
+  height:20px;
+}
+.import-trakt-view .title-list .title-import-card .trakt-title select{
+  width: 500px;
+}
+
+.import-trakt-view .import-button{
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.loading-screen {
+  z-index: 10;
+  width: 100vw;
+  height: 100%;
+  position: fixed;
+  margin-top: -50px;
+  background: rgba(0,0,0,0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+/****************************/
+/*          Result          */
+/****************************/
+
+.result-view .log{
+  max-width: 100%;
+  margin: 0 25px;
+  border: solid black 2px;
+  padding: 0 10px;
+  height: 300px;
+  overflow: auto;
+}
+.result-view .back-button{
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
 }

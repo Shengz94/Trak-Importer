@@ -1,6 +1,7 @@
-import React, { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Button } from "@material-ui/core"
 import { withRouter } from "react-router-dom";
+import Loader from "react-loader-spinner";
 import TitleImportCard from "./TitleImportCard";
 import isNull from "../Helper/Helper";
 import {addToHistory, searchForTitle} from "../Helper/TraktAPI"
@@ -8,6 +9,7 @@ import {addToHistory, searchForTitle} from "../Helper/TraktAPI"
 const ImportToTrakt = (props) => {
   const [ready, setReady] = useState(false);
   const [titleArray, setTitleArray] = useState();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     populateTrakTitle();
@@ -21,12 +23,18 @@ const ImportToTrakt = (props) => {
     if(!isNull(titleArray) && titleArray.length >= 0){
       setReady(true);
     }
-  }, [titleArray])
+  }, [titleArray]);
+
+  useEffect(() => {
+    if(isNull(props.userToken)){
+      props.history.push("/");
+    }
+  }, [props.userToken]);
 
   async function populateTrakTitle(){
-    var requests = []
+    let requests = []
     props.titles.forEach(element => {
-      var tempElement = element;
+      let tempElement = element;
       requests.push(searchForTitle(tempElement.sourceTitle));
     });
     await Promise.allSettled(requests).then(data =>{
@@ -36,43 +44,65 @@ const ImportToTrakt = (props) => {
 
   async function importTitles(){
     if(!isNull(props.titles)){
-      var requests =[];
-      var tempLog;
+      let movies= [];
+      let shows = [];
+      let tempLog;
 
-      //props.titles.forEach(async element => 
       for(const element of props.titles.values()){
-        if(element.import && !isNull(element.selected) && !isNull(element.selected.id)){                     
-          requests.push(addToHistory(element.selected.id, element.selected.type, props.userToken));
-          await new Promise(resolve => setTimeout(resolve, 1000));
+        if(element.import && !isNull(element.selected) && !isNull(element.selected.id)){ 
+          let current = {
+            "ids": {
+              "trakt": element.selected.id
+            }
+          }
+          if(element.selected.type === "movie"){
+            movies.push(current);
+          }
+          else if(element.selected.type === "show"){
+            shows.push(current);
+          }
         }
-      };
-      await Promise.allSettled(requests).then(data =>{
+      }
+      setLoading(true);
+      await addToHistory(movies, shows, props.userToken).then((data) => {
         if(!isNull(data)){
           tempLog = data;
         }
       });
-      console.log(tempLog)
+      setLoading(false);
       props.fillLog(tempLog);
       props.history.push("/Result");
     }
   }
 
   if(isNull(props.titles) || props.titles.size <= 0){
-    props.history.push("home");
+    props.history.push("/Home");
   }
 
   return (
-    <div className="title-list">
+    <div className="import-trakt-view">
+      {loading ?
+        <div className="loading-screen">
+          <Loader type="ThreeDots" color="#00BFFF" height={100} width={100}/>
+        </div>
+        :
+        <Fragment></Fragment>
+      }
       {ready  && !isNull(props.titles)?
         <Fragment>
-          {titleArray.map(title =>  
-            <TitleImportCard key={title.id} 
-              title={title} updateTitle={props.updateTitle} 
-              handleImportCheckBox={props.handleImportCheckBox} 
-              handleSelectedChange={props.handleSelectedChange}
-            />
-          )}
-          <Button onClick={importTitles}>Import titles</Button>
+          <div className="title-list">
+            {titleArray.map(title =>  
+              <TitleImportCard key={title.id} 
+                title={title} updateTitle={props.updateTitle} 
+                handleImportCheckBox={props.handleImportCheckBox} 
+                handleSelectedChange={props.handleSelectedChange}
+              />
+              )
+            }
+          </div>
+          <div className="import-button">
+            <Button variant="contained" color="default" onClick={importTitles}>Import titles</Button>
+          </div>
         </Fragment>
         :
         <Fragment/>

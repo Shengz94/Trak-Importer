@@ -1,7 +1,7 @@
-import React from "react";
 import {getAuthenticationURI} from "../Helper/TraktAPI";
 import { Button } from "@material-ui/core";
 import { withRouter} from "react-router-dom";
+import isNull from "../Helper/Helper";
 
 const Login = (props) => {
 
@@ -11,10 +11,14 @@ const Login = (props) => {
         window.location.href = uri;
     }
 
+    if(!isNull(props.userToken)){
+        props.history.push("/Home");
+    }
+
 
     return (
-        <div>
-            <Button size="small" variant="contained" onClick={goToAutheticationPage}>Log in</Button>
+        <div className="login-view">
+            <Button size="large" variant="contained" onClick={goToAutheticationPage}>Log in</Button>
         </div>
     );
 };

@@ -1,26 +1,41 @@
 import React, {Fragment}  from "react";
-import { Button } from "@material-ui/core"
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import isNull from "../Helper/Helper";
+import trakt_logo from "../Resources/trakt_logo.png"
+import github_logo from "../Resources/github_logo.png"
 
 const TopBar = (props) => {
 
   return (
     <div className="top-bar">
-        {isNull(props.user) ?
-            <Fragment></Fragment>
-            :
-            <div className="user-info">
-                <div className="user-avatar">
-                    <img src={props.user.image}/>
+        <div className="user-info">
+            <div className="left-content"> 
+                <div className="logo">
+                    <a href="https://trakt.tv/"><img id="trakt" src={trakt_logo}/></a>
                 </div>
-                <div className="user-name">
-                    <span>{props.user.username}</span>
+                <div className="app-title">
+                    <p>Trakt Importer</p>
                 </div>
-                <div className="logout">
-                    <Button onClick={props.logout}>Log out</Button>
+                <div className="logo">
+                    <a href="https://github.com/Shengz94"><img id="github" src={github_logo}/></a>
                 </div>
             </div>
-        }
+            {isNull(props.user) ?
+                <Fragment></Fragment>
+                :
+                <div className="right-content"> 
+                    <div className="logout">
+                        <ExitToAppIcon size="small" onClick={props.logout}/>
+                    </div>
+                    <div className="user-avatar">
+                        <img src={props.user.image}/>
+                    </div>
+                    <div className="user-name">
+                        <span>{props.user.name}</span>
+                    </div>
+                </div>
+            }
+        </div>
     </div>
   );
 };

@@ -1,14 +1,14 @@
 import React, {Fragment, useEffect, useState}  from "react";
-import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
+import { BrowserRouter, Switch, Route } from "react-router-dom";
 import ImportFromList from "./ImportFromList";
 import ImportToTrakt from "./ImportToTrakt";
 import Login from "./Login";
 import Result from "./Result";
-import {getToken, getUserInfo} from "../Helper/TraktAPI";
+import {getToken, getUserInfo, revokeToken} from "../Helper/TraktAPI";
 import isNull from "../Helper/Helper";
 import TopBar from "./TopBar";
 
-const Gateway = (props) => {
+const Gateway = () => {
   const [titles, setTitles] = useState(new Map());
   const [log, setLog] = useState([]);
   const [user, setUser] = useState();
@@ -17,6 +17,11 @@ const Gateway = (props) => {
 
   useEffect(() => {
     localStorage.setItem("userToken", userToken);
+    if(!isNull(userToken)){
+      getUserInfo(userToken).then((data) => {
+        setUser(data);
+      });
+    }
   }, [userToken]);
 
   useEffect(() => {
@@ -28,10 +33,6 @@ const Gateway = (props) => {
       if(!isNull(code)){
         getToken(code).then((data) => {
           setUserToken(data.access_token);
-
-          getUserInfo(data.access_token).then((data) => {
-            setUser(data);
-          });
         });
       }
     }
@@ -43,7 +44,8 @@ const Gateway = (props) => {
   }, []);
 
   function logout(){
-    localStorage.removeItem("userToken");
+    revokeToken(userToken);
+    setUserToken(undefined);
     setUser(undefined);
   }
 
@@ -52,18 +54,19 @@ const Gateway = (props) => {
   }
 
   function updateTitle(id, newTitle){
-    var tempTitles = new Map(titles);
+    let tempTitles = new Map(titles);
     tempTitles.set(id, newTitle);
     setTitles(tempTitles);
   }
 
   function updateTitles(data){
-    var tempTitles = new Map(titles);
+    let tempTitles = new Map(titles);
     let idx = 0;
     tempTitles.forEach(element => {
       element.traktTitle = data[idx].value;
-      if(!isNull(data[idx])){
-        element.selected = data[idx].value[0];
+      element.selected = data[idx].value[0];
+      if(isNull(data[idx].value[0])){
+        element.import = false;
       }
       idx++;
     });
@@ -71,31 +74,40 @@ const Gateway = (props) => {
   }
 
   function handleSelectedChange(id, title){
-    var tempTitle = titles.get(id);
+    let tempTitle = titles.get(id);
     tempTitle.selected = JSON.parse(title);
     updateTitle(id, tempTitle);
   }
 
   function handleImportCheckBox(id){
-    var tempTitle = titles.get(id);
+    let tempTitle = titles.get(id);
     tempTitle.import = !tempTitle.import;
     updateTitle(id, tempTitle);
   }
 
+  function generateNotImportedSet(data){
+    let notImportedSet = new Set();
+    data.movies.forEach( element => {
+      notImportedSet.add(element.ids.trakt);
+    });
+    data.shows.forEach( element => {
+      notImportedSet.add(element.ids.trakt);
+    });
+    return notImportedSet;
+  }
+
   function fillLog(data){
-    let idx = 0;
-    var tempLog = [];
+    let notImportedSet = generateNotImportedSet(data.notFound);
+    let tempLog = [];
     titles.forEach( title => {
       let result = "-";
       if(title.import){
         if(!isNull(title.selected)){
-          console.log(data)
-          if(!isNull(data[idx]) && data[idx].status === "fulfilled" && (
-          (title.selected.type === "movie" && data[idx].value.added.movies > 0)
-          || (title.selected.type === "show" && data[idx].value.added.episodes > 0))){
-            result = title.sourceTitle + " imported to Trakt as ///startTitle///" + title.selected.title 
-            + " - " + title.selected.year + "(" + title.selected.type 
-            + ") (ID:" + title.selected.id + "). ///end///https://trakt.tv/" + title.selected.type + "s/" + title.selected.slug;
+          if(!isNull(data) && (!notImportedSet.has(title.selected.id))){
+              result = title.sourceTitle + " imported to Trakt as ///startTitle///" 
+                + title.selected.title + " - " + title.selected.year + "(" + title.selected.type 
+                + ") (ID:" + title.selected.id + "). ///end///https://trakt.tv/" 
+                + title.selected.type + "s/" + title.selected.slug;
           }
           else{
             result = "There were a problem importing " + title.sourceTitle + " to Trakt. ";
@@ -108,7 +120,6 @@ const Gateway = (props) => {
       else{
         result = title.sourceTitle + " NOT imported to Trakt. "
       }
-      idx++;
       tempLog.push(result);
     });
     setLog(tempLog);
@@ -120,10 +131,11 @@ const Gateway = (props) => {
       <BrowserRouter basename={process.env.PUBLIC_URL}>
         <Switch>
           <Route exact path="/"> 
-            {!isNull(userToken) ? <Redirect to="Home"/> : <Login/>}
+            {/*!isNull(userToken) ? <Redirect to="Home"/> : <Login/>*/}
+            <Login userToken={userToken}/>
           </Route>
           <Route exact path="/Home">
-            <ImportFromList populateTitles={(input) => populateTitles(input)}/>
+            <ImportFromList userToken={userToken} populateTitles={(input) => populateTitles(input)}/>
           </Route>
           <Route exact path="/Import-Trakt" render={() => (
             <ImportToTrakt titles={titles} userToken={userToken} log={log}
@@ -133,7 +145,7 @@ const Gateway = (props) => {
             />
           )}/>
           <Route exact path="/Result" render={() => (
-            <Result log={log} />
+            <Result userToken={userToken} log={log} />
           )}/>
         </Switch>
       </BrowserRouter>

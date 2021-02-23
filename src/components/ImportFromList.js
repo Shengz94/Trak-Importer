@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import {useState, useEffect} from "react";
 import { Button } from "@material-ui/core";
 import isNull from "../Helper/Helper";
 import { withRouter } from "react-router-dom";
@@ -15,10 +15,10 @@ const ImportFromList = (props) => {
     const reader = new FileReader();
     reader.onload = (e) => { 
       const source = e.target.result.split("\n");
-      var titles = new Map();
+      let titles = new Map();
       source.forEach(element => {
         if(!isNull(element)){
-          var title = {
+          let title = {
             id: uuidv4(),
             sourceTitle: element,
             traktTitle: [],
@@ -34,10 +34,20 @@ const ImportFromList = (props) => {
     reader.readAsText(file);
   }
 
+  useEffect(() => {
+    if(isNull(props.userToken)){
+      props.history.push("/");
+    }
+  }, [props.userToken]);
+
   return (
-    <div>
-      <input type="file" onChange={(e) => browseFile(e)} />
-      <Button disabled={isNull(file)} onClick={processFile}>Process titles</Button>
+    <div className="import-list-view">
+      <div className="file-browser">
+        <input type="file" onChange={(e) => browseFile(e)} />
+      </div>
+      <div className="process-button">
+        <Button disabled={isNull(file)} variant="contained" color="default" onClick={processFile}>Process titles</Button>
+      </div>
     </div>
   );
 };
