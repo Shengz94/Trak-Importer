@@ -8,7 +8,7 @@ const TRAKT_AUTHORIZE = "oauth/authorize/";
 const TRAKT_GET_TOKEN = "oauth/token/";
 const TRAKT_REVOKE_TOKEN = "oauth/revoke/";
 const TRAKT_USER_INFO = "users/settings/";
-const TRAKT_REDIRECT_URI = "https://shengz94.github.io/trakt-history-importer/";
+const TRAKT_REDIRECT_URI = "https://shengz94.github.io/Trakt-Importer/";
 const TRAKT_REDIRECT_URI_DEBUG = "http://localhost:3000/";
 
 function getAuthenticationURI(){
