@@ -1,5 +1,5 @@
 # Trak Importer
-[Link to the web-app](https://shengz94.github.io/Trakt-Importer/)
+[Web-app link](https://shengz94.github.io/Trakt-Importer/)
 
 ## Description
 This app imports a list of titles to the history of your Trakt account.
