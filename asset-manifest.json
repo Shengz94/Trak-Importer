@@ -1,20 +1,20 @@
 {
   "files": {
-    "main.css": "/Trakt-Importer/static/css/main.976bec95.chunk.css",
-    "main.js": "/Trakt-Importer/static/js/main.8a2b72b1.chunk.js",
-    "main.js.map": "/Trakt-Importer/static/js/main.8a2b72b1.chunk.js.map",
+    "main.css": "/Trakt-Importer/static/css/main.f2ec5afe.chunk.css",
+    "main.js": "/Trakt-Importer/static/js/main.43206e98.chunk.js",
+    "main.js.map": "/Trakt-Importer/static/js/main.43206e98.chunk.js.map",
     "runtime-main.js": "/Trakt-Importer/static/js/runtime-main.4c771033.js",
     "runtime-main.js.map": "/Trakt-Importer/static/js/runtime-main.4c771033.js.map",
-    "static/js/2.1b3112f8.chunk.js": "/Trakt-Importer/static/js/2.1b3112f8.chunk.js",
-    "static/js/2.1b3112f8.chunk.js.map": "/Trakt-Importer/static/js/2.1b3112f8.chunk.js.map",
+    "static/js/2.318ed0a3.chunk.js": "/Trakt-Importer/static/js/2.318ed0a3.chunk.js",
+    "static/js/2.318ed0a3.chunk.js.map": "/Trakt-Importer/static/js/2.318ed0a3.chunk.js.map",
     "index.html": "/Trakt-Importer/index.html",
-    "static/css/main.976bec95.chunk.css.map": "/Trakt-Importer/static/css/main.976bec95.chunk.css.map",
-    "static/js/2.1b3112f8.chunk.js.LICENSE.txt": "/Trakt-Importer/static/js/2.1b3112f8.chunk.js.LICENSE.txt"
+    "static/css/main.f2ec5afe.chunk.css.map": "/Trakt-Importer/static/css/main.f2ec5afe.chunk.css.map",
+    "static/js/2.318ed0a3.chunk.js.LICENSE.txt": "/Trakt-Importer/static/js/2.318ed0a3.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.4c771033.js",
-    "static/js/2.1b3112f8.chunk.js",
-    "static/css/main.976bec95.chunk.css",
-    "static/js/main.8a2b72b1.chunk.js"
+    "static/js/2.318ed0a3.chunk.js",
+    "static/css/main.f2ec5afe.chunk.css",
+    "static/js/main.43206e98.chunk.js"
   ]
 }
