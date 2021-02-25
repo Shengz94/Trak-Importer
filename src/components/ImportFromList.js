@@ -17,7 +17,7 @@ const ImportFromList = (props) => {
       const source = e.target.result.split("\n");
       let titles = new Map();
       source.forEach(element => {
-        if(!isNull(element)){
+        if(!isNull(element) && element.charCodeAt(0) !== 13){
           let title = {
             id: uuidv4(),
             sourceTitle: element,
@@ -42,6 +42,9 @@ const ImportFromList = (props) => {
 
   return (
     <div className="import-list-view">
+      <div className="description">
+        <h4>Select a text file (.txt) with one title per line.</h4>
+      </div>
       <div className="file-browser">
         <input type="file" onChange={(e) => browseFile(e)} />
       </div>

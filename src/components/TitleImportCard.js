@@ -1,4 +1,5 @@
 import isNull from "../Helper/Helper";
+import OpenInNewIcon from '@material-ui/icons/OpenInNew';
 
 const TitleImport = (props) => {
   
@@ -25,6 +26,7 @@ const TitleImport = (props) => {
                       </option>
                   })}
               </select>
+              <a href={"https://trakt.tv/" + props.title.selected.type + "/" + props.title.selected.slug} target="_blank"><OpenInNewIcon /></a>
             </label>
             :
             <span><b>No title found on Trakt</b></span>

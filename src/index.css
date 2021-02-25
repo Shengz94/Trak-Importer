@@ -94,7 +94,15 @@ code {
 /*     Import from list     */
 /****************************/
 
-.import-list-view{
+.import-list-view .description{
+  display: grid;
+  justify-content: center;
+}
+.import-list-view .file-browser{
+  display: grid;
+  justify-content: center;
+}
+.import-list-view .process-button{
   display: grid;
   justify-content: center;
 }
@@ -124,6 +132,9 @@ code {
 }
 .import-trakt-view .title-list .title-import-card .trakt-title select{
   width: 500px;
+}
+.import-trakt-view .title-list .title-import-card .trakt-title a{
+  color: blue;
 }
 
 .import-trakt-view .import-button{
