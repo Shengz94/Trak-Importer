@@ -1,5 +1,5 @@
 # Trak Importer
-[Link to the web-app](https://shengz94.github.io/Trakt-Importer/)
+[Web-app link](https://shengz94.github.io/Trakt-Importer/)
 
 ## NOTE
 Looks like Trakt API doesn't accept the domain of github.io and all the requests made by the domain of github.io returns a CORS error.
