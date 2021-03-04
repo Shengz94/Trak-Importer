@@ -1,5 +1,6 @@
 const TRAKT_API_KEY = "3f2a4833bca232c1afbb66c2a56447e7d75b44372af9d45f11cf0b907b326b92";
 const TRAKT_API_SECRET = "ea9ac4d176818616f44dc3a3d643cf73569590ae0c055d2dc190023d9762ea81";
+const PROXY_DOMAIN = "https://shrouded-savannah-10975.herokuapp.com/";
 const TRAKT_DOMAIN = "https://api.trakt.tv/";
 const TRAKT_SEARCH = "search/movie,show?query=";
 const TRAKT_ADD = "sync/history/";
@@ -17,7 +18,7 @@ function getAuthenticationURI(){
 }
 
 function getToken(code){
-    let endpoint = TRAKT_DOMAIN + TRAKT_GET_TOKEN;
+    let endpoint = PROXY_DOMAIN + TRAKT_DOMAIN + TRAKT_GET_TOKEN;
 
     const body = new URLSearchParams();
     body.append("code", code);
@@ -48,7 +49,7 @@ function getToken(code){
 }
 
 function revokeToken(token){
-    let endpoint = TRAKT_DOMAIN + TRAKT_REVOKE_TOKEN;
+    let endpoint = PROXY_DOMAIN + TRAKT_DOMAIN + TRAKT_REVOKE_TOKEN;
 
     const body = new URLSearchParams();
     body.append("token", token);
@@ -67,7 +68,7 @@ function revokeToken(token){
 }
 
 function searchForTitle(title){
-    let endpoint = TRAKT_DOMAIN + TRAKT_SEARCH + encodeURI(title);
+    let endpoint = PROXY_DOMAIN + TRAKT_DOMAIN + TRAKT_SEARCH + encodeURI(title);
     let params = {
         headers:{
             "Content-Type": "application/json",
@@ -100,7 +101,7 @@ function searchForTitle(title){
 }
 
 function addToHistory(movies, shows, token){
-    let endpoint = TRAKT_DOMAIN + TRAKT_ADD;
+    let endpoint = PROXY_DOMAIN + TRAKT_DOMAIN + TRAKT_ADD;
 
     const item = {
         "movies": movies,
@@ -149,7 +150,7 @@ function addToHistory(movies, shows, token){
 }
 
 function getUserInfo(token){
-    let endpoint = TRAKT_DOMAIN + TRAKT_USER_INFO;
+    let endpoint = PROXY_DOMAIN + TRAKT_DOMAIN + TRAKT_USER_INFO;
     let params = {
         headers:{
             "Content-Type": "application/json",
@@ -170,7 +171,7 @@ function getUserInfo(token){
             slug: data.user.ids.slug,
             image: data.user.images.avatar.full,
         }
-
+        
         return user;
     });
 }

@@ -28,10 +28,14 @@ const TopBar = (props) => {
                         <ExitToAppIcon size="small" onClick={props.logout}/>
                     </div>
                     <div className="user-avatar">
-                        <img src={props.user.image}/>
+                        <a href={"https://trakt.tv/users/" + props.user.slug}>
+                            <img src={props.user.image}/>
+                        </a>
                     </div>
                     <div className="user-name">
-                        <span>{props.user.name}</span>
+                        <a href={"https://trakt.tv/users/" + props.user.slug}>
+                            <span>{props.user.name}</span>
+                        </a>
                     </div>
                 </div>
             }

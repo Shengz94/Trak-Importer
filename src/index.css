@@ -73,7 +73,10 @@ code {
   width: 30px;
   border-radius: 50%;
   margin: 0 5px 0 15px;
-
+}
+.top-bar .user-info .right-content .user-avatar a,
+.top-bar .user-info .right-content .user-name a{
+  color: white;
 }
 
 /****************************/
