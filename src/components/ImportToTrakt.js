@@ -32,7 +32,9 @@ const ImportToTrakt = (props) => {
   }, [props.userToken]);
 
   async function populateTrakTitle(){
-    let requests = []
+    let requests = [];
+
+    setLoading(true);
     props.titles.forEach(element => {
       let tempElement = element;
       requests.push(searchForTitle(tempElement.sourceTitle));
@@ -40,6 +42,8 @@ const ImportToTrakt = (props) => {
     await Promise.allSettled(requests).then(data =>{
       props.updateTitles(data);
     });
+
+    setLoading(false);
   }
 
   async function importTitles(){
@@ -48,6 +52,7 @@ const ImportToTrakt = (props) => {
       let shows = [];
       let tempLog;
 
+      setLoading(true);
       for(const element of props.titles.values()){
         if(element.import && !isNull(element.selected) && !isNull(element.selected.id)){ 
           let current = {
@@ -63,7 +68,6 @@ const ImportToTrakt = (props) => {
           }
         }
       }
-      setLoading(true);
       await addToHistory(movies, shows, props.userToken).then((data) => {
         if(!isNull(data)){
           tempLog = data;
