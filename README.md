@@ -1,11 +1,6 @@
 # Trak Importer
 [Web-app link](https://shengz94.github.io/Trakt-Importer/)
 
-## NOTE
-Looks like Trakt API doesn't accept the domain of github.io and all the requests made by the domain of github.io returns a CORS error.
-
-One solution is to install the chrome extension [Moesif Origin & CORS Changer](https://chrome.google.com/webstore/detail/moesif-origin-cors-change/digfbfaphojjndkpccljibejjbppifbc) (You can activate the extension after authorizing this web app).
-
 ## Description
 This app imports a list of titles to the history of your Trakt account.
 
