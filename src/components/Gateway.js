@@ -12,11 +12,11 @@ const Gateway = () => {
   const [titles, setTitles] = useState(new Map());
   const [log, setLog] = useState([]);
   const [user, setUser] = useState();
-  const [userToken, setUserToken] = useState(localStorage.getItem("userToken"));
+  const [userToken, setUserToken] = useState(localStorage.getItem("userToken-Trakt"));
 
 
   useEffect(() => {
-    localStorage.setItem("userToken", userToken);
+    localStorage.setItem("userToken-Trakt", userToken);
     if(!isNull(userToken)){
       getUserInfo(userToken).then((data) => {
         setUser(data);
